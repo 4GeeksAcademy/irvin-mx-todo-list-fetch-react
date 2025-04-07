@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
+//Components
 import ToDoList from "./ToDoList.jsx"
 
-//create your first component
+//Component
 const Home = () => {
 
 	const [inputValue, setInputValue] = useState("")
@@ -10,13 +11,12 @@ const Home = () => {
 	//Array where tasks will be stored
 	const [tasksArray, setTasksArray] = useState([])
 
+	//Event handlers
 	const handleInput = (e) => {
-		console.log(e.target.value)
 		setInputValue(e.target.value)
 	}
 	const handleEnterKey = (e) => {
-		console.log(typeof e.code)
-		if (e.code === "Enter") {
+		if (e.code === "Enter" && inputValue.length > 0) {
 			//console.log(inputValue)
 			//Add tasks to tasksArray
 			setTasksArray([...tasksArray, inputValue])
@@ -25,15 +25,14 @@ const Home = () => {
 
 	}
 
-
 	return (
-		<div>
-			<div>
-				<input onKeyDown={(e) => { handleEnterKey(e) }} value={inputValue} onChange={(e) => { handleInput(e) }} type="text" placeholder="What needs to be done" />
-				{/* <button onClick={(e) => { handleTask(e) }} >Add Task</button> */}
+		<div className="bg-body-tertiary d-flex flex-column justify-content-center align-items-center vh-100 ">
+			<h1 className="display-1 fw-lighter text-body-tertiary">todos</h1>
+			<div className="d-flex flex-column text-center w-50 shadow-lg">
+				<input className="p-4 fs-4 fw-light border border-0" onKeyDown={(e) => { handleEnterKey(e) }} value={inputValue} onChange={(e) => { handleInput(e) }} type="text" placeholder="What needs to be done?" />
 			</div>
 
-			<ToDoList setTasksArray={setTasksArray} tasks={tasksArray} />
+			<ToDoList className="bg-dark" setTasksArray={setTasksArray} tasks={tasksArray} />
 		</div>
 	);
 };
