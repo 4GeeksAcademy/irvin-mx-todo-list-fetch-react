@@ -4,7 +4,7 @@ const ToDoList = ({ tasks, setTasksArray, getUserTasks , userName}) => {
 
     const deleteTaskById = async (id) => {
         try{
-            const response = fetch(`https://playground.4geeks.com/todo/todos/${id}`,{
+            const response = await fetch(`https://playground.4geeks.com/todo/todos/${id}`,{
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
@@ -21,10 +21,10 @@ const ToDoList = ({ tasks, setTasksArray, getUserTasks , userName}) => {
 
     const [deleteButtonVisibility, setDeleteButtonVisibility] = useState(null)
 
-    const handleDeleteTask = (e) => {
+    const handleDeleteTask = async (e) => {
         // console.log(e.target.id)
-        deleteTaskById(e.target.id)
-        getUserTasks(userName)
+        await deleteTaskById(e.target.id)
+        await getUserTasks(userName)
         // const deletedArray = tasks.filter((item, index, array) => {
         //     return item !== array[Number(e.target.id)]
         // })

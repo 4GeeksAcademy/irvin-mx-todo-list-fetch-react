@@ -88,10 +88,37 @@ const Home = () => {
 		}
 	}
 
+	//This function deletes a user
+	const deleteUser = async (userName) => {
+		try{
+			const response = await fetch(`https://playground.4geeks.com/todo/users/${userName}`,{
+				method: "DELETE",
+				headers: {
+					"Content-Type":"application/json"
+				}
+			})
+
+			if(!response.ok){
+				throw new Error("Error trying to deleteTasks")
+			}
+
+		}catch(e){
+			console.log("Could not delete user.", e)
+		}
+	}
+
 	//Hook
 	useEffect(() => {
 		fetchAllUsers()
-		getUserTasks("user0506")
+		getUserTasks("user999")
+	// 	const findUser = users.filter(item => item.name === "user0905")
+
+	// // console.log(findUser.length)
+
+	// if(findUser.length == 0) {
+	// // // 	//crea al usuario
+	//  	createUser("user0905")
+	// }
 	}, [])
 
 	// useEffect(()=>{
@@ -100,14 +127,7 @@ const Home = () => {
 
 	// console.log(users)
 
-	const findUser = users.filter(item => item.name === "user0506")
-
-	// console.log(findUser.length)
-
-	// if (findUser.length == 0) {
-	// // 	//crea al usuario
-	// 	createUser("user0506")
-	// }
+	
 
 	// console.log("here is the end users")
 	// console.log(users)
@@ -122,7 +142,7 @@ const Home = () => {
 	const handleInput = (e) => {
 		setInputValue(e.target.value)
 	}
-	const handleEnterKey = (e) => {
+	const handleEnterKey = async (e) => {
 		if (e.code === "Enter" && inputValue.length > 0) {
 			//console.log(inputValue)
 			//Add tasks to tasksArray
@@ -130,21 +150,33 @@ const Home = () => {
 			// setInputValue("")
 
 			//Call function that adds a new post to the existing
-			addNewUserTask("user0506", inputValue)
+			await addNewUserTask("user999", inputValue)
 			setInputValue("")
-			getUserTasks("user0506")
+			await getUserTasks("user999")
 		} 
+
+	}
+
+	const handleDeleteAllTasks = async (e) => {
+		console.log("will delete all tasks", tasksArray)
+		setInputValue("")
+		await deleteUser("user999")
+		await createUser("user999")
+		setTasksArray([])
+		
 
 	}
 
 	return (
 		<div className="bg-body-tertiary d-flex flex-column justify-content-center align-items-center vh-100 ">
 			<h1 className="display-1 fw-lighter text-body-tertiary">todos</h1>
+			<button onClick={()=> {handleDeleteAllTasks()}} className="btn btn-warning m-2">Delete all tasks</button>
 			<div className="d-flex flex-column text-center w-50 shadow-lg">
 				<input className="p-4 fs-4 fw-light border border-0" onKeyDown={(e) => { handleEnterKey(e) }} value={inputValue} onChange={(e) => { handleInput(e) }} type="text" placeholder="What needs to be done?" />
 			</div>
 
-			<ToDoList setTasksArray={setTasksArray} tasks={tasksArray} getUserTasks={getUserTasks} userName="user0506" />
+			{tasksArray.length < 1? <p className="text-danger">You do not have tasks, add a task!</p> : <ToDoList setTasksArray={setTasksArray} tasks={tasksArray} getUserTasks={getUserTasks} userName="user999" /> }
+			
 		</div>
 	);
 };
